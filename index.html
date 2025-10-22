@@ -41,6 +41,7 @@
             color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .container {
@@ -144,6 +145,7 @@
             padding: 25px;
             overflow-y: auto;
             margin-left: 280px;
+            width: calc(100% - 280px);
         }
 
         .header {
@@ -573,6 +575,7 @@
             
             .main-content {
                 margin-left: 240px;
+                width: calc(100% - 240px);
             }
         }
 
@@ -609,6 +612,7 @@
             .main-content {
                 margin-left: 0;
                 padding: 20px;
+                width: 100%;
             }
 
             .charts-container {
@@ -630,6 +634,99 @@
             
             .dashboard {
                 grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .user-info {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .card .value {
+                font-size: 1.5rem;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .section-header h2 {
+                font-size: 1.3rem;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .profit-calculation {
+                padding: 15px;
+            }
+            
+            .workflow-steps {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .workflow-step {
+                flex: 0 0 calc(33.333% - 10px);
+            }
+            
+            .notification {
+                min-width: 250px;
+                right: 15px;
+                top: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 15px;
+            }
+            
+            .header {
+                padding: 15px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .workflow-step {
+                flex: 0 0 calc(50% - 10px);
+            }
+            
+            .currency-toggle {
+                flex-direction: column;
+            }
+            
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .btn {
+                padding: 12px 18px;
+                font-size: 0.9rem;
+            }
+            
+            .sidebar-header h2 {
+                font-size: 1.3rem;
+            }
+            
+            .menu-item {
+                padding: 10px 12px;
+                font-size: 0.9rem;
             }
         }
 
@@ -945,11 +1042,109 @@
             font-size: 1.2rem;
             cursor: pointer;
             margin-bottom: 20px;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Contacts Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+        
+        .modal-body {
+            padding: 20px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .contacts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .contact-item {
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .contact-item:hover {
+            background: #f8f9fa;
+            border-color: var(--secondary);
+        }
+        
+        .contact-item.selected {
+            background: #e6f7ff;
+            border-color: var(--secondary);
+        }
+        
+        .contact-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .contact-phone {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
         }
         
         @media (max-width: 768px) {
             .mobile-menu-toggle {
-                display: block;
+                display: flex;
             }
             
             .sidebar {
@@ -965,6 +1160,10 @@
             
             .main-content {
                 margin-left: 0;
+            }
+            
+            .modal {
+                width: 95%;
             }
         }
     </style>
@@ -1161,55 +1360,33 @@
             <!-- Orders Section -->
             <div class="content-section" id="orders-section">
                 <div class="section-header">
-                    <h2><i class="fas fa-shopping-bag"></i> Customer Orders (Zimbabwe)</h2>
+                    <h2><i class="fas fa-shopping-bag"></i> Customer Orders</h2>
                     <button class="btn btn-primary" id="add-order-btn">
-                        <i class="fas fa-plus"></i> New Order
+                        <i class="fas fa-plus"></i> Add New Order
                     </button>
                 </div>
 
-                <form id="order-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="order-customer">Customer</label>
-                            <select id="order-customer" required>
-                                <option value="">Select Customer</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="order-date">Order Date</label>
-                            <input type="date" id="order-date" required>
-                        </div>
-                    </div>
-
+                <div class="form-row">
                     <div class="form-group">
-                        <label for="order-items">Order Items</label>
-                        <textarea id="order-items" rows="3" placeholder="List items requested by customer..." required></textarea>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="order-amount">Total Amount (USD)</label>
-                            <input type="number" step="0.01" id="order-amount" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="order-status">Status</label>
-                            <select id="order-status" required>
-                                <option value="pending">Pending Payment</option>
-                                <option value="paid">Paid</option>
-                                <option value="purchasing">Purchasing in Kariakoo</option>
-                                <option value="shipping">Shipping to Zimbabwe</option>
-                                <option value="delivered">Delivered</option>
-                            </select>
+                        <label for="customer-search">Search Customer</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="customer-search" placeholder="Enter customer name or phone">
+                            <button type="button" class="btn btn-primary" id="select-from-contacts">
+                                <i class="fas fa-address-book"></i> Contacts
+                            </button>
                         </div>
                     </div>
-
-                    <button type="submit" class="btn btn-success">
-                        <i class="fas fa-save"></i> Save Order
-                    </button>
-                </form>
-
-                <div class="section-header" style="margin-top: 40px;">
-                    <h2><i class="fas fa-list"></i> All Customer Orders</h2>
+                    <div class="form-group">
+                        <label for="order-status-filter">Filter by Status</label>
+                        <select id="order-status-filter">
+                            <option value="all">All Orders</option>
+                            <option value="pending">Pending</option>
+                            <option value="paid">Paid</option>
+                            <option value="purchased">Purchased</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="delivered">Delivered</option>
+                        </select>
+                    </div>
                 </div>
 
                 <table id="orders-table">
@@ -1217,9 +1394,9 @@
                         <tr>
                             <th>Order ID</th>
                             <th>Customer</th>
-                            <th>Date</th>
                             <th>Items</th>
-                            <th>Amount (USD)</th>
+                            <th>Total (USD)</th>
+                            <th>Date</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -1233,70 +1410,58 @@
             <!-- Purchases Section -->
             <div class="content-section" id="purchases-section">
                 <div class="section-header">
-                    <h2><i class="fas fa-shopping-cart"></i> Kariakoo Market Purchases</h2>
+                    <h2><i class="fas fa-shopping-cart"></i> Kariakoo Purchases</h2>
                     <button class="btn btn-primary" id="add-purchase-btn">
-                        <i class="fas fa-plus"></i> Record Purchase
+                        <i class="fas fa-plus"></i> Add Purchase
                     </button>
                 </div>
 
-                <form id="purchase-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="purchase-item">Item Description</label>
-                            <input type="text" id="purchase-item" placeholder="e.g., Men's T-shirts, Women's Dresses" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="purchase-shop">Shop/Vendor</label>
-                            <input type="text" id="purchase-shop" placeholder="e.g., Shop No. 45, Kariakoo" required>
-                        </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="purchase-item">Item Name</label>
+                        <input type="text" id="purchase-item" placeholder="Enter item name">
                     </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="purchase-quantity">Quantity</label>
-                            <input type="number" id="purchase-quantity" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="purchase-cost">Cost per Item (TZS)</label>
-                            <input type="number" id="purchase-cost" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="purchase-total">Total Cost (TZS)</label>
-                            <input type="number" id="purchase-total" readonly>
-                        </div>
+                    <div class="form-group">
+                        <label for="purchase-category">Category</label>
+                        <select id="purchase-category">
+                            <option value="men">Men's Clothing</option>
+                            <option value="women">Women's Clothing</option>
+                            <option value="children">Children's Clothing</option>
+                            <option value="shoes">Shoes</option>
+                            <option value="accessories">Accessories</option>
+                        </select>
                     </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="purchase-order">Related Customer Order</label>
-                            <select id="purchase-order">
-                                <option value="">Select Order</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="purchase-date">Purchase Date</label>
-                            <input type="date" id="purchase-date" required>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-success">
-                        <i class="fas fa-save"></i> Save Purchase
-                    </button>
-                </form>
-
-                <div class="section-header" style="margin-top: 40px;">
-                    <h2><i class="fas fa-list"></i> Recent Purchases</h2>
                 </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="purchase-quantity">Quantity</label>
+                        <input type="number" id="purchase-quantity" placeholder="Enter quantity">
+                    </div>
+                    <div class="form-group">
+                        <label for="purchase-price">Price (TZS)</label>
+                        <input type="number" id="purchase-price" placeholder="Enter price in TZS">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="purchase-supplier">Supplier</label>
+                    <input type="text" id="purchase-supplier" placeholder="Enter supplier name">
+                </div>
+
+                <button class="btn btn-success" id="save-purchase-btn">
+                    <i class="fas fa-save"></i> Save Purchase
+                </button>
 
                 <table id="purchases-table">
                     <thead>
                         <tr>
                             <th>Date</th>
                             <th>Item</th>
-                            <th>Shop</th>
+                            <th>Category</th>
                             <th>Quantity</th>
-                            <th>Cost (TZS)</th>
-                            <th>Order</th>
+                            <th>Price (TZS)</th>
+                            <th>Supplier</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -1309,63 +1474,56 @@
             <!-- Shipments Section -->
             <div class="content-section" id="shipments-section">
                 <div class="section-header">
-                    <h2><i class="fas fa-shipping-fast"></i> Shipments to Zimbabwe</h2>
+                    <h2><i class="fas fa-shipping-fast"></i> Shipments</h2>
                     <button class="btn btn-primary" id="add-shipment-btn">
-                        <i class="fas fa-plus"></i> New Shipment
+                        <i class="fas fa-plus"></i> Add Shipment
                     </button>
                 </div>
 
-                <form id="shipment-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="shipment-orders">Orders in Shipment</label>
-                            <select id="shipment-orders" multiple required>
-                                <!-- Orders will be loaded here -->
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="shipment-method">Shipping Method</label>
-                            <select id="shipment-method" required>
-                                <option value="bus">Bus Transport</option>
-                                <option value="truck">Truck Transport</option>
-                                <option value="air">Air Freight</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="shipment-cost">Shipping Cost (USD)</label>
-                            <input type="number" step="0.01" id="shipment-cost" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="shipment-date">Shipment Date</label>
-                            <input type="date" id="shipment-date" required>
-                        </div>
-                    </div>
-
+                <div class="form-row">
                     <div class="form-group">
-                        <label for="shipment-tracking">Tracking Information</label>
-                        <input type="text" id="shipment-tracking" placeholder="Tracking number or bus details" required>
+                        <label for="shipment-order">Order ID</label>
+                        <input type="text" id="shipment-order" placeholder="Enter order ID">
                     </div>
-
-                    <button type="submit" class="btn btn-success">
-                        <i class="fas fa-save"></i> Save Shipment
-                    </button>
-                </form>
-
-                <div class="section-header" style="margin-top: 40px;">
-                    <h2><i class="fas fa-list"></i> Active Shipments</h2>
+                    <div class="form-group">
+                        <label for="shipment-carrier">Carrier</label>
+                        <select id="shipment-carrier">
+                            <option value="dhl">DHL</option>
+                            <option value="fedex">FedEx</option>
+                            <option value="ups">UPS</option>
+                            <option value="local">Local Carrier</option>
+                        </select>
+                    </div>
                 </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="shipment-date">Shipment Date</label>
+                        <input type="date" id="shipment-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="shipment-cost">Shipping Cost (USD)</label>
+                        <input type="number" id="shipment-cost" placeholder="Enter shipping cost">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="shipment-tracking">Tracking Number</label>
+                    <input type="text" id="shipment-tracking" placeholder="Enter tracking number">
+                </div>
+
+                <button class="btn btn-success" id="save-shipment-btn">
+                    <i class="fas fa-save"></i> Save Shipment
+                </button>
 
                 <table id="shipments-table">
                     <thead>
                         <tr>
-                            <th>Shipment ID</th>
-                            <th>Orders</th>
-                            <th>Method</th>
+                            <th>Order ID</th>
+                            <th>Carrier</th>
+                            <th>Tracking</th>
                             <th>Date</th>
-                            <th>Cost</th>
+                            <th>Cost (USD)</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -1379,7 +1537,7 @@
             <!-- Inventory Section -->
             <div class="content-section" id="inventory-section">
                 <div class="section-header">
-                    <h2><i class="fas fa-boxes"></i> Inventory Management</h2>
+                    <h2><i class="fas fa-boxes"></i> Inventory</h2>
                     <button class="btn btn-primary" id="add-inventory-btn">
                         <i class="fas fa-plus"></i> Add Item
                     </button>
@@ -1393,45 +1551,52 @@
             <!-- Payments Section -->
             <div class="content-section" id="payments-section">
                 <div class="section-header">
-                    <h2><i class="fas fa-money-bill-wave"></i> Payment Tracking</h2>
+                    <h2><i class="fas fa-money-bill-wave"></i> Payments</h2>
+                    <button class="btn btn-primary" id="add-payment-btn">
+                        <i class="fas fa-plus"></i> Add Payment
+                    </button>
                 </div>
 
-                <div class="dashboard">
-                    <div class="card">
-                        <h3><i class="fas fa-check-circle"></i> Payments Received</h3>
-                        <div class="value">$0.00</div>
-                        <p>From Zimbabwe customers</p>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="payment-order">Order ID</label>
+                        <input type="text" id="payment-order" placeholder="Enter order ID">
                     </div>
-                    <div class="card">
-                        <h3><i class="fas fa-clock"></i> Pending Payments</h3>
-                        <div class="value">$0.00</div>
-                        <p>Awaiting customer payment</p>
-                    </div>
-                    <div class="card">
-                        <h3><i class="fas fa-money-bill"></i> Kariakoo Expenses</h3>
-                        <div class="value">TZS 0</div>
-                        <p>Paid to Kariakoo vendors</p>
-                    </div>
-                    <div class="card">
-                        <h3><i class="fas fa-shipping-fast"></i> Shipping Costs</h3>
-                        <div class="value">$0.00</div>
-                        <p>Transport to Zimbabwe</p>
+                    <div class="form-group">
+                        <label for="payment-method">Payment Method</label>
+                        <select id="payment-method">
+                            <option value="cash">Cash</option>
+                            <option value="ecocash">Ecocash</option>
+                            <option value="bank">Bank Transfer</option>
+                            <option value="paypal">PayPal</option>
+                        </select>
                     </div>
                 </div>
 
-                <div class="section-header" style="margin-top: 40px;">
-                    <h2><i class="fas fa-list"></i> Payment Records</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="payment-amount">Amount (USD)</label>
+                        <input type="number" id="payment-amount" placeholder="Enter amount">
+                    </div>
+                    <div class="form-group">
+                        <label for="payment-date">Payment Date</label>
+                        <input type="date" id="payment-date">
+                    </div>
                 </div>
+
+                <button class="btn btn-success" id="save-payment-btn">
+                    <i class="fas fa-save"></i> Save Payment
+                </button>
 
                 <table id="payments-table">
                     <thead>
                         <tr>
+                            <th>Order ID</th>
+                            <th>Amount (USD)</th>
+                            <th>Method</th>
                             <th>Date</th>
-                            <th>From/To</th>
-                            <th>Description</th>
-                            <th>Amount</th>
-                            <th>Type</th>
                             <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1443,43 +1608,53 @@
             <!-- Customers Section -->
             <div class="content-section" id="customers-section">
                 <div class="section-header">
-                    <h2><i class="fas fa-users"></i> Zimbabwe Customers</h2>
+                    <h2><i class="fas fa-users"></i> Customers</h2>
                     <button class="btn btn-primary" id="add-customer-btn">
                         <i class="fas fa-plus"></i> Add Customer
                     </button>
                 </div>
 
-                <form id="customer-form" style="margin-bottom: 30px;">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="customer-name">Customer Name</label>
-                            <input type="text" id="customer-name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="customer-location">Location</label>
-                            <select id="customer-location" required>
-                                <option value="Harare">Harare</option>
-                                <option value="Bulawayo">Bulawayo</option>
-                                <option value="Gweru">Gweru</option>
-                                <option value="Mutare">Mutare</option>
-                                <option value="Masvingo">Masvingo</option>
-                                <option value="Chinhoyi">Chinhoyi</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customer-name">Full Name</label>
+                        <input type="text" id="customer-name" placeholder="Enter customer name">
                     </div>
                     <div class="form-group">
-                        <label for="customer-contact">Contact Information</label>
-                        <input type="text" id="customer-contact" placeholder="Phone number or email" required>
+                        <label for="customer-phone">Phone Number</label>
+                        <input type="text" id="customer-phone" placeholder="Enter phone number">
                     </div>
-                    <button type="submit" class="btn btn-success">
-                        <i class="fas fa-save"></i> Add Customer
-                    </button>
-                </form>
-
-                <div class="inventory-grid" id="customers-grid">
-                    <!-- Customers will be loaded here -->
                 </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customer-email">Email</label>
+                        <input type="email" id="customer-email" placeholder="Enter email address">
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-location">Location</label>
+                        <input type="text" id="customer-location" placeholder="Enter location in Zimbabwe">
+                    </div>
+                </div>
+
+                <button class="btn btn-success" id="save-customer-btn">
+                    <i class="fas fa-save"></i> Save Customer
+                </button>
+
+                <table id="customers-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Location</th>
+                            <th>Orders</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Customers will be loaded here -->
+                    </tbody>
+                </table>
             </div>
 
             <!-- Analytics Section -->
@@ -1490,19 +1665,19 @@
 
                 <div class="analytics-summary">
                     <div class="summary-card">
-                        <h3>Monthly Revenue</h3>
-                        <div class="value" id="monthly-revenue">$0.00</div>
+                        <h3>Total Orders</h3>
+                        <div class="value" id="total-orders">0</div>
                         <div class="change trend-up">
                             <i class="fas fa-arrow-up"></i>
-                            <span>15% from last month</span>
+                            <span>12% from last month</span>
                         </div>
                     </div>
                     <div class="summary-card">
-                        <h3>Monthly Expenses</h3>
-                        <div class="value" id="monthly-expenses">$0.00</div>
-                        <div class="change trend-down">
-                            <i class="fas fa-arrow-down"></i>
-                            <span>8% from last month</span>
+                        <h3>Revenue (USD)</h3>
+                        <div class="value" id="revenue-analytics">$0.00</div>
+                        <div class="change trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>15% from last month</span>
                         </div>
                     </div>
                     <div class="summary-card">
@@ -1514,28 +1689,28 @@
                         </div>
                     </div>
                     <div class="summary-card">
-                        <h3>Active Customers</h3>
-                        <div class="value" id="active-customers">0</div>
+                        <h3>Customer Growth</h3>
+                        <div class="value" id="customer-growth">0%</div>
                         <div class="change trend-up">
                             <i class="fas fa-arrow-up"></i>
-                            <span>2 new this month</span>
+                            <span>8% from last month</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="charts-container">
                     <div class="chart">
-                        <h3>Revenue by Customer Location</h3>
+                        <h3>Monthly Revenue</h3>
                         <div class="chart-placeholder">
-                            <i class="fas fa-chart-pie fa-3x"></i>
-                            <span>Revenue by Location Chart</span>
+                            <i class="fas fa-chart-line fa-3x"></i>
+                            <p>Revenue chart will appear here</p>
                         </div>
                     </div>
                     <div class="chart">
-                        <h3>Top Selling Items</h3>
+                        <h3>Top Selling Categories</h3>
                         <div class="chart-placeholder">
-                            <i class="fas fa-chart-bar fa-3x"></i>
-                            <span>Top Items Chart</span>
+                            <i class="fas fa-chart-pie fa-3x"></i>
+                            <p>Category chart will appear here</p>
                         </div>
                     </div>
                 </div>
@@ -1548,49 +1723,45 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="exchange-rate-input">Exchange Rate (1 USD to TZS)</label>
-                    <input type="number" id="exchange-rate-input" value="2300">
-                    <button class="btn btn-primary" id="update-exchange-rate" style="margin-top: 10px;">
-                        <i class="fas fa-sync"></i> Update Exchange Rate
-                    </button>
-                </div>
-
-                <div class="form-group" style="margin-top: 30px;">
-                    <label for="business-name">Business Name</label>
-                    <input type="text" id="business-name" value="Shingie's Closet">
+                    <label for="exchange-rate-setting">Exchange Rate (1 USD to TZS)</label>
+                    <input type="number" id="exchange-rate-setting" placeholder="Enter current exchange rate">
                 </div>
 
                 <div class="form-group">
-                    <label for="business-owner">Business Owner</label>
-                    <input type="text" id="business-owner" value="Shingie">
+                    <label for="profit-margin-setting">Default Profit Margin (%)</label>
+                    <input type="number" id="profit-margin-setting" value="35" placeholder="Enter profit margin">
                 </div>
 
                 <div class="form-group">
-                    <label for="markup-percentage">Markup Percentage</label>
-                    <input type="number" id="markup-percentage" value="35" min="0" max="100">
-                    <small>The percentage added to purchase cost for selling price</small>
+                    <label for="shipping-cost-setting">Default Shipping Cost (USD)</label>
+                    <input type="number" id="shipping-cost-setting" placeholder="Enter shipping cost">
                 </div>
 
-                <button class="btn btn-success" id="save-settings">
+                <div class="toggle-container">
+                    <span>Enable Notifications</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="notifications-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <button class="btn btn-success" id="save-settings-btn">
                     <i class="fas fa-save"></i> Save Settings
                 </button>
 
-                <div class="section-header" style="margin-top: 40px;">
-                    <h2><i class="fas fa-database"></i> Data Management</h2>
-                </div>
-
-                <div class="form-row">
-                    <button class="btn btn-warning" id="export-data">
+                <div class="form-group" style="margin-top: 30px;">
+                    <h3>Data Management</h3>
+                    <button class="btn btn-warning" id="export-data-btn">
                         <i class="fas fa-file-export"></i> Export Data
                     </button>
-                    <button class="btn btn-danger" id="reset-data">
+                    <button class="btn btn-danger" id="reset-data-btn">
                         <i class="fas fa-trash"></i> Reset All Data
                     </button>
                 </div>
             </div>
 
             <footer>
-                <p>AfriTrade Connect &copy; 2023 | Tanzania-Zimbabwe Clothing Business Manager</p>
+                <p>AfriTrade Connect &copy; 2023 | Tanzania-Zimbabwe Clothing Trade Management System</p>
             </footer>
         </div>
     </div>
@@ -1601,450 +1772,840 @@
         <span id="notification-text">Operation completed successfully!</span>
     </div>
 
+    <!-- Contacts Modal -->
+    <div class="modal-overlay" id="contacts-modal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Select from Phone Contacts</h3>
+                <button class="modal-close" id="close-contacts-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="contacts-list" id="contacts-list">
+                    <!-- Contacts will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning" id="cancel-contact-selection">Cancel</button>
+                <button class="btn btn-success" id="confirm-contact-selection">Select Contact</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Data storage using localStorage
-        const AppData = {
-            // Initialize data structure
-            init: function() {
-                if (!localStorage.getItem('afritrade_data')) {
-                    const initialData = {
-                        exchangeRate: 2300,
-                        markupPercentage: 35,
-                        businessName: "Shingie's Closet",
-                        businessOwner: "Shingie",
-                        customers: [],
-                        orders: [],
-                        purchases: [],
-                        shipments: [],
-                        inventory: [],
-                        payments: []
-                    };
-                    localStorage.setItem('afritrade_data', JSON.stringify(initialData));
-                }
-                return JSON.parse(localStorage.getItem('afritrade_data'));
-            },
-
-            // Save data to localStorage
-            save: function(data) {
-                localStorage.setItem('afritrade_data', JSON.stringify(data));
-            },
-
-            // Get all data
-            getAll: function() {
-                return this.init();
-            },
-
-            // Update specific data
-            update: function(key, value) {
-                const data = this.getAll();
-                data[key] = value;
-                this.save(data);
-                return data;
-            },
-
-            // Add item to a collection
-            addItem: function(collection, item) {
-                const data = this.getAll();
-                // Generate ID if not provided
-                if (!item.id) {
-                    item.id = data[collection].length > 0 ? 
-                        Math.max(...data[collection].map(i => i.id)) + 1 : 1;
-                }
-                data[collection].push(item);
-                this.save(data);
-                return item;
-            },
-
-            // Update item in a collection
-            updateItem: function(collection, id, updates) {
-                const data = this.getAll();
-                const index = data[collection].findIndex(item => item.id === id);
-                if (index !== -1) {
-                    data[collection][index] = {...data[collection][index], ...updates};
-                    this.save(data);
-                    return data[collection][index];
-                }
-                return null;
-            },
-
-            // Remove item from a collection
-            removeItem: function(collection, id) {
-                const data = this.getAll();
-                const index = data[collection].findIndex(item => item.id === id);
-                if (index !== -1) {
-                    data[collection].splice(index, 1);
-                    this.save(data);
-                    return true;
-                }
-                return false;
+        // Initialize data storage
+        let businessData = {
+            orders: [],
+            purchases: [],
+            shipments: [],
+            inventory: [],
+            payments: [],
+            customers: [],
+            settings: {
+                exchangeRate: 2500,
+                profitMargin: 35,
+                shippingCost: 50,
+                notifications: true
             }
         };
 
-        // Currency formatting
-        const Currency = {
-            current: 'usd',
-            format: function(amount, currency = this.current) {
-                if (currency === 'usd') {
-                    return '$' + parseFloat(amount).toFixed(2);
-                } else {
-                    // Convert to TZS using exchange rate
-                    const data = AppData.getAll();
-                    const tzsAmount = amount * data.exchangeRate;
-                    return 'TZS ' + tzsAmount.toLocaleString();
-                }
-            },
+        // DOM Elements
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const menuItems = document.querySelectorAll('.menu-item');
+        const contentSections = document.querySelectorAll('.content-section');
+        const currencyOptions = document.querySelectorAll('.currency-option');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notification-text');
+        
+        // Contacts modal elements
+        const contactsModal = document.getElementById('contacts-modal');
+        const contactsList = document.getElementById('contacts-list');
+        const closeContactsModal = document.getElementById('close-contacts-modal');
+        const cancelContactSelection = document.getElementById('cancel-contact-selection');
+        const confirmContactSelection = document.getElementById('confirm-contact-selection');
+        const selectFromContactsBtn = document.getElementById('select-from-contacts');
+        
+        // Selected contact
+        let selectedContact = null;
 
-            convert: function(amount, from, to) {
-                const data = AppData.getAll();
-                if (from === 'usd' && to === 'tzs') {
-                    return amount * data.exchangeRate;
-                } else if (from === 'tzs' && to === 'usd') {
-                    return amount / data.exchangeRate;
-                }
-                return amount;
-            }
-        };
-
-        // Profit calculation
-        const ProfitCalculator = {
-            calculate: function(purchaseCost, transportCost) {
-                const data = AppData.getAll();
-                const markup = purchaseCost * (data.markupPercentage / 100);
-                const sellingPrice = purchaseCost + markup;
-                const netProfit = markup - transportCost;
-                
-                return {
-                    purchaseCost,
-                    markup,
-                    sellingPrice,
-                    transportCost,
-                    netProfit,
-                    markupPercentage: data.markupPercentage
-                };
-            }
-        };
-
-        // DOM Elements and App Initialization
+        // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
-            const appData = AppData.getAll();
-            
-            // Initialize UI with current data
-            initUI();
-            
-            // Set up event listeners
-            setupEventListeners();
-            
-            // Load initial data
             loadData();
-            
-            function initUI() {
-                // Set current date for forms
-                const today = new Date().toISOString().split('T')[0];
-                document.getElementById('order-date').value = today;
-                document.getElementById('purchase-date').value = today;
-                document.getElementById('shipment-date').value = today;
-                
-                // Set exchange rate display
-                document.getElementById('exchange-rate').textContent = `1 USD = TZS ${appData.exchangeRate.toLocaleString()}`;
-                document.getElementById('rate-date').textContent = new Date().toLocaleDateString();
-                document.getElementById('exchange-rate-input').value = appData.exchangeRate;
-                
-                // Set business info
-                document.getElementById('business-name').value = appData.businessName;
-                document.getElementById('business-owner').value = appData.businessOwner;
-                document.getElementById('markup-percentage').value = appData.markupPercentage;
-                
-                // Set up currency toggle
-                document.querySelectorAll('.currency-option').forEach(option => {
-                    option.addEventListener('click', function() {
-                        document.querySelectorAll('.currency-option').forEach(o => o.classList.remove('active'));
-                        this.classList.add('active');
-                        Currency.current = this.getAttribute('data-currency');
-                        updateCurrencyDisplay();
-                    });
-                });
-                
-                // Mobile menu toggle
-                document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
-                    document.getElementById('sidebar').classList.toggle('active');
-                });
-                
-                // Menu navigation
-                const menuItems = document.querySelectorAll('.menu-item');
-                const contentSections = document.querySelectorAll('.content-section');
-                
-                menuItems.forEach(item => {
-                    item.addEventListener('click', function() {
-                        const sectionId = this.getAttribute('data-section') + '-section';
-                        
-                        // Update active menu item
-                        menuItems.forEach(i => i.classList.remove('active'));
-                        this.classList.add('active');
-                        
-                        // Show selected section
-                        contentSections.forEach(section => {
-                            section.classList.remove('active');
-                        });
-                        document.getElementById(sectionId).classList.add('active');
-                        
-                        // Close mobile menu after selection
-                        if (window.innerWidth <= 768) {
-                            document.getElementById('sidebar').classList.remove('active');
-                        }
-                    });
-                });
-            }
-            
-            function setupEventListeners() {
-                // Form submissions
-                document.getElementById('order-form').addEventListener('submit', handleOrderSubmit);
-                document.getElementById('purchase-form').addEventListener('submit', handlePurchaseSubmit);
-                document.getElementById('shipment-form').addEventListener('submit', handleShipmentSubmit);
-                document.getElementById('customer-form').addEventListener('submit', handleCustomerSubmit);
-                
-                // Purchase cost calculation
-                document.getElementById('purchase-quantity').addEventListener('input', calculatePurchaseTotal);
-                document.getElementById('purchase-cost').addEventListener('input', calculatePurchaseTotal);
-                
-                // Buttons
-                document.getElementById('update-exchange-rate').addEventListener('click', updateExchangeRate);
-                document.getElementById('save-settings').addEventListener('click', saveSettings);
-                document.getElementById('export-data').addEventListener('click', exportData);
-                document.getElementById('reset-data').addEventListener('click', resetData);
-                document.getElementById('view-all-orders').addEventListener('click', function() {
-                    showSection('orders');
-                });
-            }
-            
-            function loadData() {
-                // This would load all data into the UI
-                // For brevity, we'll just update the dashboard
-                updateDashboard();
-                updateProfitCalculation();
-            }
-            
-            function updateDashboard() {
-                const data = AppData.getAll();
-                
-                // Calculate totals
-                const totalRevenue = data.orders
-                    .filter(order => order.status === 'delivered' || order.status === 'paid')
-                    .reduce((sum, order) => sum + parseFloat(order.amount), 0);
-                    
-                const totalExpenses = data.purchases
-                    .reduce((sum, purchase) => sum + parseFloat(purchase.totalCost), 0);
-                    
-                const totalProfit = totalRevenue - totalExpenses;
-                
-                // Update dashboard cards
-                document.getElementById('total-revenue').textContent = Currency.format(totalRevenue);
-                document.getElementById('total-expenses').textContent = Currency.format(totalExpenses);
-                document.getElementById('net-profit').textContent = Currency.format(totalProfit);
-            }
-            
-            function updateProfitCalculation() {
-                const data = AppData.getAll();
-                
-                // Get recent purchase for calculation example
-                const recentPurchase = data.purchases[data.purchases.length - 1];
-                if (recentPurchase) {
-                    const purchaseCostUSD = Currency.convert(recentPurchase.totalCost, 'tzs', 'usd');
-                    const transportCost = 50; // Example transport cost
-                    
-                    const profitData = ProfitCalculator.calculate(purchaseCostUSD, transportCost);
-                    
-                    document.getElementById('purchase-cost-display').textContent = Currency.format(profitData.purchaseCost);
-                    document.getElementById('markup-amount').textContent = Currency.format(profitData.markup);
-                    document.getElementById('selling-price').textContent = Currency.format(profitData.sellingPrice);
-                    document.getElementById('transport-costs').textContent = Currency.format(profitData.transportCost);
-                    document.getElementById('net-profit-display').textContent = Currency.format(profitData.netProfit);
-                }
-            }
-            
-            function updateCurrencyDisplay() {
-                // This would update all currency displays in the app
-                updateDashboard();
-                updateProfitCalculation();
-            }
-            
-            function calculatePurchaseTotal() {
-                const quantity = parseInt(document.getElementById('purchase-quantity').value) || 0;
-                const cost = parseInt(document.getElementById('purchase-cost').value) || 0;
-                document.getElementById('purchase-total').value = quantity * cost;
-            }
-            
-            function handleOrderSubmit(e) {
-                e.preventDefault();
-                
-                const customer = document.getElementById('order-customer').value;
-                const date = document.getElementById('order-date').value;
-                const items = document.getElementById('order-items').value;
-                const amount = parseFloat(document.getElementById('order-amount').value);
-                const status = document.getElementById('order-status').value;
-                
-                const newOrder = {
-                    customer,
-                    date,
-                    items,
-                    amount,
-                    status
-                };
-                
-                AppData.addItem('orders', newOrder);
-                showNotification('Order added successfully!', 'success');
-                updateDashboard();
-                document.getElementById('order-form').reset();
-                document.getElementById('order-date').value = new Date().toISOString().split('T')[0];
-            }
-            
-            function handlePurchaseSubmit(e) {
-                e.preventDefault();
-                
-                const item = document.getElementById('purchase-item').value;
-                const shop = document.getElementById('purchase-shop').value;
-                const quantity = parseInt(document.getElementById('purchase-quantity').value);
-                const cost = parseInt(document.getElementById('purchase-cost').value);
-                const totalCost = parseInt(document.getElementById('purchase-total').value);
-                const orderId = document.getElementById('purchase-order').value;
-                const date = document.getElementById('purchase-date').value;
-                
-                const newPurchase = {
-                    item,
-                    shop,
-                    quantity,
-                    cost,
-                    totalCost,
-                    orderId,
-                    date
-                };
-                
-                AppData.addItem('purchases', newPurchase);
-                showNotification('Purchase recorded successfully!', 'success');
-                updateDashboard();
-                updateProfitCalculation();
-                document.getElementById('purchase-form').reset();
-                document.getElementById('purchase-date').value = new Date().toISOString().split('T')[0];
-            }
-            
-            function handleShipmentSubmit(e) {
-                e.preventDefault();
-                
-                const orders = Array.from(document.getElementById('shipment-orders').selectedOptions)
-                    .map(option => option.value);
-                const method = document.getElementById('shipment-method').value;
-                const cost = parseFloat(document.getElementById('shipment-cost').value);
-                const date = document.getElementById('shipment-date').value;
-                const tracking = document.getElementById('shipment-tracking').value;
-                
-                const newShipment = {
-                    orders,
-                    method,
-                    cost,
-                    date,
-                    tracking,
-                    status: 'in transit'
-                };
-                
-                AppData.addItem('shipments', newShipment);
-                showNotification('Shipment added successfully!', 'success');
-                document.getElementById('shipment-form').reset();
-                document.getElementById('shipment-date').value = new Date().toISOString().split('T')[0];
-            }
-            
-            function handleCustomerSubmit(e) {
-                e.preventDefault();
-                
-                const name = document.getElementById('customer-name').value;
-                const location = document.getElementById('customer-location').value;
-                const contact = document.getElementById('customer-contact').value;
-                
-                const newCustomer = {
-                    name,
-                    location,
-                    contact
-                };
-                
-                AppData.addItem('customers', newCustomer);
-                showNotification('Customer added successfully!', 'success');
-                document.getElementById('customer-form').reset();
-            }
-            
-            function updateExchangeRate() {
-                const newRate = parseFloat(document.getElementById('exchange-rate-input').value);
-                if (newRate && newRate > 0) {
-                    AppData.update('exchangeRate', newRate);
-                    document.getElementById('exchange-rate').textContent = `1 USD = TZS ${newRate.toLocaleString()}`;
-                    document.getElementById('rate-date').textContent = new Date().toLocaleDateString();
-                    showNotification('Exchange rate updated successfully!', 'success');
-                    updateCurrencyDisplay();
-                } else {
-                    showNotification('Please enter a valid exchange rate!', 'error');
-                }
-            }
-            
-            function saveSettings() {
-                const businessName = document.getElementById('business-name').value;
-                const businessOwner = document.getElementById('business-owner').value;
-                const markupPercentage = parseInt(document.getElementById('markup-percentage').value);
-                
-                AppData.update('businessName', businessName);
-                AppData.update('businessOwner', businessOwner);
-                AppData.update('markupPercentage', markupPercentage);
-                
-                showNotification('Settings saved successfully!', 'success');
-                updateProfitCalculation();
-            }
-            
-            function exportData() {
-                const data = AppData.getAll();
-                const dataStr = JSON.stringify(data, null, 2);
-                const dataBlob = new Blob([dataStr], {type: 'application/json'});
-                
-                const url = URL.createObjectURL(dataBlob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = 'afritrade-data.json';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                showNotification('Data exported successfully!', 'success');
-            }
-            
-            function resetData() {
-                if (confirm('Are you sure you want to reset all data? This action cannot be undone.')) {
-                    localStorage.removeItem('afritrade_data');
-                    AppData.init();
-                    showNotification('All data has been reset!', 'warning');
-                    location.reload();
-                }
-            }
-            
-            function showSection(sectionId) {
-                const menuItems = document.querySelectorAll('.menu-item');
-                const contentSections = document.querySelectorAll('.content-section');
-                
-                menuItems.forEach(i => i.classList.remove('active'));
-                document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
-                
-                contentSections.forEach(section => {
-                    section.classList.remove('active');
-                });
-                document.getElementById(`${sectionId}-section`).classList.add('active');
-            }
-            
-            function showNotification(message, type) {
-                const notification = document.getElementById('notification');
-                const notificationText = document.getElementById('notification-text');
-                
-                notificationText.textContent = message;
-                notification.className = `notification ${type} show`;
-                
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 3000);
-            }
+            initializeEventListeners();
+            updateDashboard();
+            showSection('dashboard');
         });
+
+        // Initialize event listeners
+        function initializeEventListeners() {
+            // Mobile menu toggle
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+
+            // Menu item clicks
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const sectionId = this.getAttribute('data-section');
+                    showSection(sectionId);
+                    
+                    // Update active menu item
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Close mobile menu after selection
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove('active');
+                    }
+                });
+            });
+
+            // Currency toggle
+            currencyOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    currencyOptions.forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                    updateCurrencyDisplay(this.getAttribute('data-currency'));
+                });
+            });
+
+            // Form submission buttons
+            document.getElementById('save-purchase-btn').addEventListener('click', savePurchase);
+            document.getElementById('save-shipment-btn').addEventListener('click', saveShipment);
+            document.getElementById('save-payment-btn').addEventListener('click', savePayment);
+            document.getElementById('save-customer-btn').addEventListener('click', saveCustomer);
+            document.getElementById('save-settings-btn').addEventListener('click', saveSettings);
+            
+            // Data management buttons
+            document.getElementById('export-data-btn').addEventListener('click', exportData);
+            document.getElementById('reset-data-btn').addEventListener('click', resetData);
+            
+            // Add buttons
+            document.getElementById('add-order-btn').addEventListener('click', () => showSection('orders'));
+            document.getElementById('add-purchase-btn').addEventListener('click', () => showSection('purchases'));
+            document.getElementById('add-shipment-btn').addEventListener('click', () => showSection('shipments'));
+            document.getElementById('add-inventory-btn').addEventListener('click', () => showSection('inventory'));
+            document.getElementById('add-payment-btn').addEventListener('click', () => showSection('payments'));
+            document.getElementById('add-customer-btn').addEventListener('click', () => showSection('customers'));
+            
+            // Contacts modal
+            selectFromContactsBtn.addEventListener('click', openContactsModal);
+            closeContactsModal.addEventListener('click', closeContactsModalFunc);
+            cancelContactSelection.addEventListener('click', closeContactsModalFunc);
+            confirmContactSelection.addEventListener('click', confirmContactSelectionFunc);
+        }
+
+        // Open contacts modal
+        function openContactsModal() {
+            // Check if Contacts API is available
+            if ('contacts' in navigator && 'select' in navigator.contacts) {
+                // Use the Contacts API to get phone contacts
+                navigator.contacts.select(['name', 'tel'], { multiple: false })
+                    .then(contacts => {
+                        if (contacts && contacts.length > 0) {
+                            const contact = contacts[0];
+                            // Auto-fill the customer form with selected contact
+                            document.getElementById('customer-name').value = contact.name ? contact.name[0] : '';
+                            if (contact.tel && contact.tel.length > 0) {
+                                document.getElementById('customer-phone').value = contact.tel[0];
+                            }
+                            showNotification('Contact selected successfully!', 'success');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error accessing contacts:', err);
+                        showNotification('Could not access contacts. Please check permissions.', 'error');
+                        // Fallback: Show manual contact selection
+                        showManualContactsModal();
+                    });
+            } else {
+                // Fallback for browsers that don't support Contacts API
+                showManualContactsModal();
+            }
+        }
+        
+        // Show manual contacts modal (fallback)
+        function showManualContactsModal() {
+            // In a real app, you would load contacts from localStorage or another source
+            // For this demo, we'll use sample contacts
+            contactsList.innerHTML = '';
+            
+            const sampleContacts = [
+                { name: 'Tendai Moyo', phone: '+263 77 123 4567' },
+                { name: 'Anesu Chidzonga', phone: '+263 71 987 6543' },
+                { name: 'Farai Banda', phone: '+263 78 456 7890' },
+                { name: 'Rudo Maphosa', phone: '+263 77 555 1212' },
+                { name: 'Tatenda Ndlovu', phone: '+263 71 333 4444' }
+            ];
+            
+            sampleContacts.forEach(contact => {
+                const contactItem = document.createElement('div');
+                contactItem.className = 'contact-item';
+                contactItem.innerHTML = `
+                    <div class="contact-name">${contact.name}</div>
+                    <div class="contact-phone">${contact.phone}</div>
+                `;
+                contactItem.addEventListener('click', function() {
+                    // Remove selection from all contacts
+                    document.querySelectorAll('.contact-item').forEach(item => {
+                        item.classList.remove('selected');
+                    });
+                    // Select this contact
+                    this.classList.add('selected');
+                    selectedContact = contact;
+                });
+                contactsList.appendChild(contactItem);
+            });
+            
+            // Show the modal
+            contactsModal.style.display = 'flex';
+            selectedContact = null;
+        }
+        
+        // Close contacts modal
+        function closeContactsModalFunc() {
+            contactsModal.style.display = 'none';
+            selectedContact = null;
+        }
+        
+        // Confirm contact selection
+        function confirmContactSelectionFunc() {
+            if (selectedContact) {
+                // Auto-fill the customer form with selected contact
+                document.getElementById('customer-name').value = selectedContact.name;
+                document.getElementById('customer-phone').value = selectedContact.phone;
+                closeContactsModalFunc();
+                showNotification('Contact selected successfully!', 'success');
+            } else {
+                showNotification('Please select a contact first', 'error');
+            }
+        }
+
+        // Show specific section
+        function showSection(sectionId) {
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const targetSection = document.getElementById(`${sectionId}-section`);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                
+                // Update the header title
+                const headerTitle = document.querySelector('.header h1');
+                const sectionName = document.querySelector(`[data-section="${sectionId}"] span`).textContent;
+                headerTitle.textContent = sectionName;
+                
+                // Load section-specific data
+                loadSectionData(sectionId);
+            }
+        }
+
+        // Load section-specific data
+        function loadSectionData(sectionId) {
+            switch(sectionId) {
+                case 'orders':
+                    loadOrdersTable();
+                    break;
+                case 'purchases':
+                    loadPurchasesTable();
+                    break;
+                case 'shipments':
+                    loadShipmentsTable();
+                    break;
+                case 'inventory':
+                    loadInventoryGrid();
+                    break;
+                case 'payments':
+                    loadPaymentsTable();
+                    break;
+                case 'customers':
+                    loadCustomersTable();
+                    break;
+                case 'analytics':
+                    updateAnalytics();
+                    break;
+            }
+        }
+
+        // Update dashboard with current data
+        function updateDashboard() {
+            // Calculate totals
+            const totalRevenue = businessData.orders.reduce((sum, order) => sum + order.total, 0);
+            const totalExpenses = businessData.purchases.reduce((sum, purchase) => sum + (purchase.price * purchase.quantity / businessData.settings.exchangeRate), 0);
+            const netProfit = totalRevenue - totalExpenses;
+            
+            // Update dashboard cards
+            document.getElementById('total-revenue').textContent = formatCurrency(totalRevenue);
+            document.getElementById('total-expenses').textContent = formatCurrency(totalExpenses);
+            document.getElementById('net-profit').textContent = formatCurrency(netProfit);
+            document.getElementById('exchange-rate').textContent = `1 USD = TZS ${businessData.settings.exchangeRate.toLocaleString()}`;
+            document.getElementById('rate-date').textContent = new Date().toLocaleDateString();
+            
+            // Update profit calculation
+            document.getElementById('purchase-cost-display').textContent = formatCurrency(totalExpenses);
+            const markupAmount = totalExpenses * (businessData.settings.profitMargin / 100);
+            document.getElementById('markup-amount').textContent = formatCurrency(markupAmount);
+            document.getElementById('selling-price').textContent = formatCurrency(totalExpenses + markupAmount);
+            document.getElementById('transport-costs').textContent = formatCurrency(businessData.settings.shippingCost);
+            document.getElementById('net-profit-display').textContent = formatCurrency(netProfit);
+            
+            // Load recent orders
+            loadRecentOrders();
+        }
+
+        // Load recent orders for dashboard
+        function loadRecentOrders() {
+            const tableBody = document.querySelector('#recent-orders-table tbody');
+            tableBody.innerHTML = '';
+            
+            const recentOrders = businessData.orders.slice(0, 5); // Get last 5 orders
+            
+            recentOrders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.customerName}</td>
+                    <td>${order.items.length} items</td>
+                    <td>${formatCurrency(order.total)}</td>
+                    <td><span class="status-badge status-${order.status}">${order.status}</span></td>
+                    <td>
+                        <button class="action-btn edit-btn" data-id="${order.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" data-id="${order.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Load orders table
+        function loadOrdersTable() {
+            const tableBody = document.querySelector('#orders-table tbody');
+            tableBody.innerHTML = '';
+            
+            businessData.orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.customerName}</td>
+                    <td>${order.items.length} items</td>
+                    <td>${formatCurrency(order.total)}</td>
+                    <td>${order.date}</td>
+                    <td><span class="status-badge status-${order.status}">${order.status}</span></td>
+                    <td>
+                        <button class="action-btn edit-btn" data-id="${order.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" data-id="${order.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Load purchases table
+        function loadPurchasesTable() {
+            const tableBody = document.querySelector('#purchases-table tbody');
+            tableBody.innerHTML = '';
+            
+            businessData.purchases.forEach(purchase => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${purchase.date}</td>
+                    <td>${purchase.item}</td>
+                    <td>${purchase.category}</td>
+                    <td>${purchase.quantity}</td>
+                    <td>${purchase.price.toLocaleString()}</td>
+                    <td>${purchase.supplier}</td>
+                    <td>
+                        <button class="action-btn edit-btn" data-id="${purchase.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" data-id="${purchase.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Load shipments table
+        function loadShipmentsTable() {
+            const tableBody = document.querySelector('#shipments-table tbody');
+            tableBody.innerHTML = '';
+            
+            businessData.shipments.forEach(shipment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${shipment.orderId}</td>
+                    <td>${shipment.carrier}</td>
+                    <td>${shipment.tracking}</td>
+                    <td>${shipment.date}</td>
+                    <td>${formatCurrency(shipment.cost)}</td>
+                    <td><span class="status-badge status-${shipment.status}">${shipment.status}</span></td>
+                    <td>
+                        <button class="action-btn edit-btn" data-id="${shipment.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" data-id="${shipment.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Load inventory grid
+        function loadInventoryGrid() {
+            const inventoryGrid = document.getElementById('inventory-grid');
+            inventoryGrid.innerHTML = '';
+            
+            businessData.inventory.forEach(item => {
+                const inventoryItem = document.createElement('div');
+                inventoryItem.className = `inventory-item ${item.quantity < 10 ? 'low-stock' : ''}`;
+                inventoryItem.innerHTML = `
+                    <h4>${item.name}</h4>
+                    <div class="inventory-meta">
+                        <span>Category: ${item.category}</span>
+                        <span>Stock: ${item.quantity}</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${Math.min(item.quantity / 50 * 100, 100)}%"></div>
+                    </div>
+                    <div class="inventory-meta">
+                        <span>Cost: ${formatCurrency(item.cost)}</span>
+                        <span>Value: ${formatCurrency(item.value)}</span>
+                    </div>
+                `;
+                inventoryGrid.appendChild(inventoryItem);
+            });
+        }
+
+        // Load payments table
+        function loadPaymentsTable() {
+            const tableBody = document.querySelector('#payments-table tbody');
+            tableBody.innerHTML = '';
+            
+            businessData.payments.forEach(payment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${payment.orderId}</td>
+                    <td>${formatCurrency(payment.amount)}</td>
+                    <td>${payment.method}</td>
+                    <td>${payment.date}</td>
+                    <td><span class="status-badge status-${payment.status}">${payment.status}</span></td>
+                    <td>
+                        <button class="action-btn edit-btn" data-id="${payment.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" data-id="${payment.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Load customers table
+        function loadCustomersTable() {
+            const tableBody = document.querySelector('#customers-table tbody');
+            tableBody.innerHTML = '';
+            
+            businessData.customers.forEach(customer => {
+                const orderCount = businessData.orders.filter(order => order.customerId === customer.id).length;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${customer.name}</td>
+                    <td>${customer.phone}</td>
+                    <td>${customer.email}</td>
+                    <td>${customer.location}</td>
+                    <td>${orderCount}</td>
+                    <td>
+                        <button class="action-btn edit-btn" data-id="${customer.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" data-id="${customer.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Update analytics
+        function updateAnalytics() {
+            document.getElementById('total-orders').textContent = businessData.orders.length;
+            document.getElementById('revenue-analytics').textContent = formatCurrency(
+                businessData.orders.reduce((sum, order) => sum + order.total, 0)
+            );
+            
+            const totalCost = businessData.purchases.reduce((sum, purchase) => sum + (purchase.price * purchase.quantity / businessData.settings.exchangeRate), 0);
+            const totalRevenue = businessData.orders.reduce((sum, order) => sum + order.total, 0);
+            const profitMargin = totalRevenue > 0 ? ((totalRevenue - totalCost) / totalRevenue * 100).toFixed(1) : 0;
+            
+            document.getElementById('profit-margin').textContent = `${profitMargin}%`;
+            document.getElementById('customer-growth').textContent = `${businessData.customers.length > 5 ? '8' : '0'}%`;
+        }
+
+        // Save purchase
+        function savePurchase() {
+            const item = document.getElementById('purchase-item').value;
+            const category = document.getElementById('purchase-category').value;
+            const quantity = parseInt(document.getElementById('purchase-quantity').value);
+            const price = parseInt(document.getElementById('purchase-price').value);
+            const supplier = document.getElementById('purchase-supplier').value;
+            
+            if (!item || !quantity || !price || !supplier) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            const newPurchase = {
+                id: generateId(),
+                date: new Date().toLocaleDateString(),
+                item,
+                category,
+                quantity,
+                price,
+                supplier
+            };
+            
+            businessData.purchases.push(newPurchase);
+            saveData();
+            loadPurchasesTable();
+            updateDashboard();
+            
+            // Clear form
+            document.getElementById('purchase-item').value = '';
+            document.getElementById('purchase-quantity').value = '';
+            document.getElementById('purchase-price').value = '';
+            document.getElementById('purchase-supplier').value = '';
+            
+            showNotification('Purchase saved successfully!', 'success');
+        }
+
+        // Save shipment
+        function saveShipment() {
+            const orderId = document.getElementById('shipment-order').value;
+            const carrier = document.getElementById('shipment-carrier').value;
+            const date = document.getElementById('shipment-date').value;
+            const cost = parseFloat(document.getElementById('shipment-cost').value);
+            const tracking = document.getElementById('shipment-tracking').value;
+            
+            if (!orderId || !carrier || !date || !cost || !tracking) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            const newShipment = {
+                id: generateId(),
+                orderId,
+                carrier,
+                date,
+                cost,
+                tracking,
+                status: 'shipped'
+            };
+            
+            businessData.shipments.push(newShipment);
+            saveData();
+            loadShipmentsTable();
+            
+            // Clear form
+            document.getElementById('shipment-order').value = '';
+            document.getElementById('shipment-date').value = '';
+            document.getElementById('shipment-cost').value = '';
+            document.getElementById('shipment-tracking').value = '';
+            
+            showNotification('Shipment saved successfully!', 'success');
+        }
+
+        // Save payment
+        function savePayment() {
+            const orderId = document.getElementById('payment-order').value;
+            const method = document.getElementById('payment-method').value;
+            const amount = parseFloat(document.getElementById('payment-amount').value);
+            const date = document.getElementById('payment-date').value;
+            
+            if (!orderId || !method || !amount || !date) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            const newPayment = {
+                id: generateId(),
+                orderId,
+                method,
+                amount,
+                date,
+                status: 'completed'
+            };
+            
+            businessData.payments.push(newPayment);
+            saveData();
+            loadPaymentsTable();
+            
+            // Clear form
+            document.getElementById('payment-order').value = '';
+            document.getElementById('payment-amount').value = '';
+            document.getElementById('payment-date').value = '';
+            
+            showNotification('Payment saved successfully!', 'success');
+        }
+
+        // Save customer
+        function saveCustomer() {
+            const name = document.getElementById('customer-name').value;
+            const phone = document.getElementById('customer-phone').value;
+            const email = document.getElementById('customer-email').value;
+            const location = document.getElementById('customer-location').value;
+            
+            if (!name || !phone || !location) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            const newCustomer = {
+                id: generateId(),
+                name,
+                phone,
+                email,
+                location
+            };
+            
+            businessData.customers.push(newCustomer);
+            saveData();
+            loadCustomersTable();
+            updateAnalytics();
+            
+            // Clear form
+            document.getElementById('customer-name').value = '';
+            document.getElementById('customer-phone').value = '';
+            document.getElementById('customer-email').value = '';
+            document.getElementById('customer-location').value = '';
+            
+            showNotification('Customer saved successfully!', 'success');
+        }
+
+        // Save settings
+        function saveSettings() {
+            const exchangeRate = parseFloat(document.getElementById('exchange-rate-setting').value);
+            const profitMargin = parseFloat(document.getElementById('profit-margin-setting').value);
+            const shippingCost = parseFloat(document.getElementById('shipping-cost-setting').value);
+            const notifications = document.getElementById('notifications-toggle').checked;
+            
+            if (!exchangeRate || !profitMargin) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            businessData.settings.exchangeRate = exchangeRate;
+            businessData.settings.profitMargin = profitMargin;
+            businessData.settings.shippingCost = shippingCost;
+            businessData.settings.notifications = notifications;
+            
+            saveData();
+            updateDashboard();
+            
+            showNotification('Settings saved successfully!', 'success');
+        }
+
+        // Export data
+        function exportData() {
+            const dataStr = JSON.stringify(businessData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'afritrade-connect-data.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('Data exported successfully!', 'success');
+        }
+
+        // Reset data
+        function resetData() {
+            if (confirm('Are you sure you want to reset all data? This action cannot be undone.')) {
+                businessData = {
+                    orders: [],
+                    purchases: [],
+                    shipments: [],
+                    inventory: [],
+                    payments: [],
+                    customers: [],
+                    settings: {
+                        exchangeRate: 2500,
+                        profitMargin: 35,
+                        shippingCost: 50,
+                        notifications: true
+                    }
+                };
+                
+                saveData();
+                updateDashboard();
+                loadSectionData('orders');
+                loadSectionData('purchases');
+                loadSectionData('shipments');
+                loadSectionData('inventory');
+                loadSectionData('payments');
+                loadSectionData('customers');
+                loadSectionData('analytics');
+                
+                showNotification('All data has been reset', 'warning');
+            }
+        }
+
+        // Update currency display
+        function updateCurrencyDisplay(currency) {
+            // This would update all currency displays based on selected currency
+            // For now, we'll just update the dashboard
+            updateDashboard();
+        }
+
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            }).format(amount);
+        }
+
+        // Generate unique ID
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            notification.className = `notification ${type}`;
+            notificationText.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('afritradeData', JSON.stringify(businessData));
+        }
+
+        // Load data from localStorage
+        function loadData() {
+            const savedData = localStorage.getItem('afritradeData');
+            if (savedData) {
+                businessData = JSON.parse(savedData);
+            }
+            
+            // Initialize sample data if empty
+            if (businessData.orders.length === 0) {
+                initializeSampleData();
+            }
+            
+            // Update settings form
+            document.getElementById('exchange-rate-setting').value = businessData.settings.exchangeRate;
+            document.getElementById('profit-margin-setting').value = businessData.settings.profitMargin;
+            document.getElementById('shipping-cost-setting').value = businessData.settings.shippingCost;
+            document.getElementById('notifications-toggle').checked = businessData.settings.notifications;
+        }
+
+        // Initialize sample data
+        function initializeSampleData() {
+            businessData.orders = [
+                {
+                    id: 'ORD-001',
+                    customerName: 'Tendai Moyo',
+                    items: ['Men\'s Jeans (x2)', 'T-Shirts (x3)'],
+                    total: 145.50,
+                    date: '2023-10-15',
+                    status: 'paid',
+                    customerId: 'CUST-001'
+                },
+                {
+                    id: 'ORD-002',
+                    customerName: 'Anesu Chidzonga',
+                    items: ['Women\'s Dresses (x2)', 'Shoes (x1)'],
+                    total: 98.75,
+                    date: '2023-10-18',
+                    status: 'shipped',
+                    customerId: 'CUST-002'
+                }
+            ];
+            
+            businessData.purchases = [
+                {
+                    id: 'PUR-001',
+                    date: '2023-10-10',
+                    item: 'Men\'s Jeans',
+                    category: 'men',
+                    quantity: 10,
+                    price: 25000,
+                    supplier: 'Kariakoo Wholesale'
+                },
+                {
+                    id: 'PUR-002',
+                    date: '2023-10-12',
+                    item: 'T-Shirts',
+                    category: 'men',
+                    quantity: 15,
+                    price: 8000,
+                    supplier: 'Mwanamboka Stores'
+                }
+            ];
+            
+            businessData.customers = [
+                {
+                    id: 'CUST-001',
+                    name: 'Tendai Moyo',
+                    phone: '+263 77 123 4567',
+                    email: 'tendai@example.com',
+                    location: 'Harare'
+                },
+                {
+                    id: 'CUST-002',
+                    name: 'Anesu Chidzonga',
+                    phone: '+263 71 987 6543',
+                    email: 'anesu@example.com',
+                    location: 'Bulawayo'
+                }
+            ];
+            
+            businessData.inventory = [
+                {
+                    id: 'INV-001',
+                    name: 'Men\'s Jeans',
+                    category: 'men',
+                    quantity: 8,
+                    cost: 10.00,
+                    value: 80.00
+                },
+                {
+                    id: 'INV-002',
+                    name: 'T-Shirts',
+                    category: 'men',
+                    quantity: 12,
+                    cost: 3.20,
+                    value: 38.40
+                }
+            ];
+            
+            saveData();
+        }
     </script>
 </body>
 </html>
